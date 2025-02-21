@@ -10,30 +10,35 @@ const getters = {
 };
 
 const actions = {
-  async register({dispatch}, form) {
-    await axios.post('register', form);
+  async register({ dispatch }, form) {
+    await axios.post('register', form, { withCredentials: true });
     let UserForm = new FormData();
     UserForm.append('username', form.username);
     UserForm.append('password', form.password);
     await dispatch('logIn', UserForm);
   },
-  async logIn({dispatch}, user) {
-    await axios.post('login', user);
+
+  async logIn({ dispatch }, user) {
+    await axios.post('login', user, { withCredentials: true });  // <-- Добавил withCredentials
     await dispatch('viewMe');
   },
-  async viewMe({commit}) {
-    let {data} = await axios.get('users/whoami');
+
+  async viewMe({ commit }) {
+    let { data } = await axios.get('users/whoami', { withCredentials: true });  // <-- Добавил withCredentials
     await commit('setUser', data);
   },
+
   // eslint-disable-next-line no-empty-pattern
   async deleteUser({}, id) {
-    await axios.delete(`user/${id}`);
+    await axios.delete(`user/${id}`, { withCredentials: true });  // <-- Если авторизация нужна
   },
-  async logOut({commit}) {
+
+  async logOut({ commit }) {
     let user = null;
     commit('logout', user);
   }
 };
+
 
 const mutations = {
   setUser(state, username) {

@@ -10,6 +10,10 @@
           <input type="text" name="full_name" v-model="user.full_name" class="form-control" />
         </div>
         <div class="mb-3">
+          <label for="email" class="form-label">Email:</label>
+          <input type="text" name="email" v-model="user.email" class="form-control" />
+        </div>
+        <div class="mb-3">
           <label for="password" class="form-label">Password:</label>
           <input type="password" name="password" v-model="user.password" class="form-control" />
         </div>
@@ -29,6 +33,7 @@
         user: {
           username: '',
           full_name: '',
+          email: '',
           password: '',
         },
       };
@@ -41,7 +46,7 @@
           this.$router.push('/dashboard');
         } catch (error) {
           console.error(error); // Выведет реальную ошибку в консоли
-          throw 'Username already exists. Please try again.';
+          throw 'Error in registration';
         }
       },
     },
