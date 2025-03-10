@@ -7,6 +7,7 @@ const state = {
 const getters = {
   isAuthenticated: state => !!state.user,
   stateUser: state => state.user,
+  getUserRole: state => state.data ? state.data.role_name : null,
 };
 
 const actions = {
@@ -18,14 +19,29 @@ const actions = {
     await dispatch('logIn', UserForm);
   },
 
-  async logIn({ dispatch }, user) {
-    await axios.post('login', user, { withCredentials: true });  // <-- Добавил withCredentials
-    await dispatch('viewMe');
+  async logIn({ dispatch }, user) { 
+    try {
+      await axios.post('login', user, { withCredentials: true }); 
+      await dispatch('viewMe');
+    } catch (error) {
+      console.error('Login failed:', error?.response?.data || error?.message || 'Unknown error');
+      throw error; // ! Важно, чтобы ошибка попала в submit
+    }
   },
 
   async viewMe({ commit }) {
-    let { data } = await axios.get('users/whoami', { withCredentials: true });  // <-- Добавил withCredentials
-    await commit('setUser', data);
+    try {
+      const response = await axios.get('users/whoami', { withCredentials: true });
+      const responseuser = await axios.get('users/getuser', { withCredentials: true });
+      if (response && response.data) {
+        await commit('setUser', {username: response.data, data: responseuser.data});
+      } else {
+        console.log('No data found in the response');
+      }
+    } catch (error) {
+      console.error('viewMe failed:', error); // Выводит детали ошибки в консоль
+      throw error; // ! Важно, чтобы ошибка попала в submit
+    }
   },
 
   // eslint-disable-next-line no-empty-pattern
@@ -35,17 +51,20 @@ const actions = {
 
   async logOut({ commit }) {
     let user = null;
-    commit('logout', user);
+    let data = null;
+    commit('logout', user, data);
   }
 };
 
 
 const mutations = {
-  setUser(state, username) {
+  setUser(state, { username, data }) {
     state.user = username;
+    state.data = data || {}; // Подстрахуемся от undefined
   },
-  logout(state, user){
+  logout(state, user, data){
     state.user = user;
+    state.data = data;
   },
 };
 
