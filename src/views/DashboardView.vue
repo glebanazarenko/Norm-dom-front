@@ -56,7 +56,6 @@
   export default defineComponent({
     name: 'DashboardView',
     data() {
-      console.log('test 2');
       return {
         form: {
           title: '',

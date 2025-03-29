@@ -12,6 +12,8 @@
     </p>
   </section>
 </template>
+
+
 <script>
 
 import { defineComponent } from 'vue';

@@ -21,7 +21,7 @@
 
             <!-- Пункт только для Admin -->
             <li v-if="userRole === 'Admin'" class="nav-item">
-              <router-link class="nav-link" to="/fill-db">Заполнить БД</router-link>
+              <router-link class="nav-link" to="/admin">Заполнить БД</router-link>
             </li>
 
             <!-- Логаут всегда есть -->

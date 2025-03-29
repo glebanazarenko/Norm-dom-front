@@ -8,6 +8,7 @@ const getters = {
   isAuthenticated: state => !!state.user,
   stateUser: state => state.user,
   getUserRole: state => state.data ? state.data.role_name : null,
+  isAdmin: state => state.data && state.data.role_name === 'Admin',
 };
 
 const actions = {
@@ -60,7 +61,7 @@ const actions = {
 const mutations = {
   setUser(state, { username, data }) {
     state.user = username;
-    state.data = data || {}; // Подстрахуемся от undefined
+    state.data = data || {};
   },
   logout(state, user, data){
     state.user = user;

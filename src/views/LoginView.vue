@@ -40,7 +40,6 @@ export default defineComponent({
         User.append('password', this.form.password);
 
         await this.logIn(User); // Ожидаем успешного выполнения
-        console.log('test');
         this.$router.push('/dashboard');
       } catch (error) {
         if (error.response) {
