@@ -7,6 +7,7 @@ import ProfileView from '@/views/ProfileView.vue';
 import NoteView from '@/views/NoteView.vue';
 import EditNoteView from '@/views/EditNoteView.vue';
 import AdminView from '@/views/AdminView.vue';
+import SearchResultsView from '@/views/SearchResultsView.vue';
 import store from '@/store';
 
 const routes = [
@@ -17,7 +18,8 @@ const routes = [
   { path: '/profile', name: 'Profile', component: ProfileView, meta: { requiresAuth: true }},
   { path: '/note/:id', name: 'Note', component: NoteView, meta: { requiresAuth: true }, props: true },
   { path: '/editnote/:id', name: 'EditNote', component: EditNoteView, meta: { requiresAuth: true }, props: true },
-  { path: '/admin', name: 'Admin', component: AdminView, meta: { requiresAuth: true, requiresAdmin: true } }
+  { path: '/admin', name: 'Admin', component: AdminView, meta: { requiresAuth: true, requiresAdmin: true } },
+  { path: '/search-results', name: 'SearchResults', component: SearchResultsView }
 ];
 
 const router = createRouter({
