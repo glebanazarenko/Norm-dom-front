@@ -14,11 +14,24 @@ const getters = {
 const actions = {
   async searchHouses({ commit }, query) {
     try {
-      const response = await axios.get(`/houses/search?query=${encodeURIComponent(query)}`);
-      commit("setQuery", query); // Сохраняем результаты поиска в состоянии
-      commit("setHouses", response.data); // Сохраняем результаты поиска в состоянии
+        const response = await axios.get(`/houses/search?query=${encodeURIComponent(query)}`);
+
+        if (response.status === 200) {
+            // Если запрос успешен, сохраняем данные
+            commit("setQuery", query);
+            commit("setHouses", response.data);
+        }
     } catch (error) {
-      console.error("Error fetching houses:", error);
+        if (error.response && error.response.status === 404) {
+            // Если ошибка 404, сохраняем пустой массив домов
+            console.warn("No houses found.");
+            commit("setQuery", query);
+            commit("setHouses", []); // Устанавливаем пустой массив результатов
+        } else {
+            // Для других ошибок выводим сообщение в консоль
+            console.error("Error fetching houses:", error);
+            throw error; // Перебрасываем ошибку дальше, если это не 404
+        }
     }
   },
   async getHouseById({ commit }, id) {

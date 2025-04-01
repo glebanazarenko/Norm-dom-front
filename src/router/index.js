@@ -8,6 +8,7 @@ import NoteView from '@/views/NoteView.vue';
 import EditNoteView from '@/views/EditNoteView.vue';
 import AdminView from '@/views/AdminView.vue';
 import SearchResultsView from '@/views/SearchResultsView.vue';
+import HouseDetailPage from '@/views/HouseDetailView.vue';
 import store from '@/store';
 
 const routes = [
@@ -19,7 +20,8 @@ const routes = [
   { path: '/note/:id', name: 'Note', component: NoteView, meta: { requiresAuth: true }, props: true },
   { path: '/editnote/:id', name: 'EditNote', component: EditNoteView, meta: { requiresAuth: true }, props: true },
   { path: '/admin', name: 'Admin', component: AdminView, meta: { requiresAuth: true, requiresAdmin: true } },
-  { path: '/search-results', name: 'SearchResults', component: SearchResultsView }
+  { path: '/search-results', name: 'SearchResults', component: SearchResultsView },
+  { path: "/house/:id", name: "HouseDetail", component: HouseDetailPage },
 ];
 
 const router = createRouter({

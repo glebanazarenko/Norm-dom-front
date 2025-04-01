@@ -15,22 +15,14 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <!-- Поиск домов -->
-          <form class="d-flex ms-auto me-3" @submit.prevent="searchHousesWrapper">
-            <input
-              v-model="searchQuery"
-              class="form-control me-2"
-              type="search"
-              placeholder="Search houses..."
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
 
           <!-- Навигация для авторизованных пользователей -->
           <ul v-if="isLoggedIn" class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/search-results">Search</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
@@ -56,6 +48,9 @@
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" to="/search-results">Search</router-link>
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link" to="/register">Register</router-link>
             </li>
             <li class="nav-item">
@@ -70,7 +65,6 @@
   
 <script>
 import { defineComponent } from "vue";
-import { mapActions } from 'vuex';
 
 export default defineComponent({
   name: "NavBar",
@@ -91,23 +85,6 @@ export default defineComponent({
     async logout() {
       await this.$store.dispatch("logOut");
       this.$router.push("/login");
-    },
-    ...mapActions(["searchHouses"]), // Импортируем action из Vuex
-
-    async searchHousesWrapper() {
-      if (this.searchQuery.trim()) {
-        try {
-          // Передаем строку поиска в Vuex-действие
-          await this.searchHouses(this.searchQuery);
-          this.$router.push({
-            name: "SearchResults",
-            query: { q: this.searchQuery }, // Передаем строку поиска через query параметры
-          });
-        } catch (error) {
-          console.error("Error searching houses:", error);
-        }
-      }
-      this.searchQuery = ""; // Очищаем поле поиска
     },
   },
 });
