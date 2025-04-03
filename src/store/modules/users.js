@@ -1,4 +1,12 @@
 import axios from 'axios';
+import router from '@/router';
+
+// Функция для чтения куки
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 const state = {
   user: null,
@@ -23,6 +31,11 @@ const actions = {
   async logIn({ dispatch }, user) { 
     try {
       await axios.post('login', user, { withCredentials: true }); 
+      // Получаем токен из куки
+      const cookie = getCookie('Authorization');
+      if (cookie) {
+        console.log('Token from cookie:', cookie.replace('Bearer ', '')); // Выводим токен в консоль
+      }
       await dispatch('viewMe');
     } catch (error) {
       console.error('Login failed:', error?.response?.data || error?.message || 'Unknown error');
@@ -35,13 +48,14 @@ const actions = {
       const response = await axios.get('users/whoami', { withCredentials: true });
       const responseuser = await axios.get('users/getuser', { withCredentials: true });
       if (response && response.data) {
-        await commit('setUser', {username: response.data, data: responseuser.data});
+        await commit('setUser', { username: response.data, data: responseuser.data });
       } else {
         console.log('No data found in the response');
+        await this.$store.dispatch("logOut"); // Если данные не получены, выполняем logout
       }
     } catch (error) {
       console.error('viewMe failed:', error); // Выводит детали ошибки в консоль
-      throw error; // ! Важно, чтобы ошибка попала в submit
+      await this.$store.dispatch("logOut"); // При ошибке выполняем logout
     }
   },
 
@@ -51,21 +65,27 @@ const actions = {
   },
 
   async logOut({ commit }) {
-    let user = null;
-    let data = null;
-    commit('logout', user, data);
+    try {
+      await commit('logout');
+
+      // Удаляем куку на клиенте (если нужно)
+      document.cookie = "Authorization=; Max-Age=-99999999;"; 
+
+      router.push('/login'); // Переход на страницу входа
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   }
 };
-
 
 const mutations = {
   setUser(state, { username, data }) {
     state.user = username;
     state.data = data || {};
   },
-  logout(state, user, data){
-    state.user = user;
-    state.data = data;
+  logout(state) {
+    state.user = null;
+    state.data = {};
   },
 };
 

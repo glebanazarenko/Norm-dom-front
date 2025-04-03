@@ -19,7 +19,7 @@
     name: "SearchForm",
     data() {
       return {
-        query: "", // Состояние для хранения строки поиска
+        searchQuery: "", // Состояние для хранения строки поиска
       };
     },
     methods: {
