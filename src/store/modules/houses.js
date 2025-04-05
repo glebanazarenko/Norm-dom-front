@@ -42,6 +42,43 @@ const actions = {
       console.error("Error fetching house by ID:", error);
     }
   },
+  async addReviewToHouse({ commit }, { id, review, rating }) {
+    try {
+      // Проверяем корректность данных
+      if (!review || typeof review !== "string" || review.trim() === "") {
+        console.error("Текст отзыва должен быть непустой строкой.");
+        return;
+      }
+
+      const parsedRating = parseInt(rating, 10);
+      if (isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5) {
+        console.error("Рейтинг должен быть целым числом от 1 до 5.");
+        return;
+      }
+
+      console.log("Отправляю данные:", { review_data: review, rating: parsedRating });
+      // Отправляем запрос с данными в виде JSON
+      const json = JSON.stringify({ review_data: review, rating: parsedRating });
+      const response = await axios.post(
+        `/house/${id}/reviews`,
+        json, // Данные должны соответствовать схеме ReviewCreateSchema
+        { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
+      );
+
+      if (response.status === 200) {
+        commit("setHouse", response.data); // Обновляем дом после добавления отзыва
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 422) {
+        console.error("Невалидные данные:", error.response.data.detail);
+      } else {
+        console.error("Ошибка при добавлении отзыва:", error);
+      }
+      throw error; // Передаем ошибку дальше
+    }
+  },
+
+
   // Дополнительные действия можно добавить здесь (например, создание, обновление или удаление дома)
 };
 
