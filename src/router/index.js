@@ -9,6 +9,7 @@ import EditNoteView from '@/views/EditNoteView.vue';
 import AdminView from '@/views/AdminView.vue';
 import SearchResultsView from '@/views/SearchResultsView.vue';
 import HouseDetailPage from '@/views/HouseDetailView.vue';
+import HousesMap from '@/views/Map.vue';
 import store from '@/store';
 
 const routes = [
@@ -22,6 +23,7 @@ const routes = [
   { path: '/admin', name: 'Admin', component: AdminView, meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/search-results', name: 'SearchResults', component: SearchResultsView },
   { path: "/house/:id", name: "HouseDetail", component: HouseDetailPage },
+  { path: "/map", name: "HousesMap", component: HousesMap },
 ];
 
 const router = createRouter({

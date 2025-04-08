@@ -25,6 +25,9 @@
               <router-link class="nav-link" to="/search-results">Search</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" to="/map">Map</router-link>
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
             </li>
             <li class="nav-item">
@@ -49,6 +52,9 @@
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/search-results">Search</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/map">Map</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/register">Register</router-link>

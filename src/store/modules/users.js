@@ -17,6 +17,7 @@ const getters = {
   stateUser: state => state.user,
   getUserRole: state => state.data ? state.data.role_name : null,
   isAdmin: state => state.data && state.data.role_name === 'Admin',
+  isVip: state => state.data && state.data.role_name === 'Super User',
 };
 
 const actions = {
