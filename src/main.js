@@ -9,7 +9,7 @@ const app = createApp(App);
 
 // Настройка axios
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'https://localhost:5000/';
+axios.defaults.baseURL = 'https://localhost:5001/';
 
 // Функция для чтения куки
 function getCookie(name) {
